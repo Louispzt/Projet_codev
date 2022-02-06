@@ -8,11 +8,11 @@ class App extends Component {
     super(props);
     this.state = { apiResponse: "" };
 
-    this.callAPI();
+    this.setState({ apiResponse: this.callAPI() });
   }
 
   callAPI() {
-    fetch("http://localhost:9000/testAPI")
+    fetch("http://localhost:9000")
       .then((res) => res.text())
       .then((res) => this.setState({ apiResponse: res }));
   }
@@ -20,8 +20,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <p className="App-intro">{this.state.apiResponse}</p>
         <Map />
+        <p className="App-intro">{this.state.apiResponse}</p>
       </div>
     );
   }
