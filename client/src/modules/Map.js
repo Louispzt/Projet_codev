@@ -40,23 +40,20 @@ function Map() {
   };
 
   return (
-    <div className={"mapDiv"}>
-      <h1>Map</h1>
-      <MapLeaf
-        className={"mapLeaf"}
-        zoom={6}
-        center={[46, 4]}
-        zoomControl={false}
-        maxZoom={6}
-        minZoom={6}
-      >
-        <GeoJSON
-          style={countryStyle}
-          data={mapData.features}
-          onEachFeature={onEachRegion}
-        />
-      </MapLeaf>
-    </div>
+    <MapLeaf
+      className={"mapLeaf"}
+      zoom={6}
+      center={[46, 4]}
+      zoomControl={false}
+      maxZoom={6}
+      minZoom={6}
+    >
+      <GeoJSON
+        style={countryStyle}
+        data={mapData.features}
+        onEachFeature={onEachRegion}
+      />
+    </MapLeaf>
   );
 }
 
