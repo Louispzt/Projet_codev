@@ -8,18 +8,18 @@ import {
   Tooltip,
 } from "recharts";
 
-function LineChart24hEco() {
+function LineChart24hEco({ selectedRegion }) {
   const [data, setData] = React.useState(null);
 
-  //Make request to API
+  //Make request to API each time selectedRegion change.
   React.useEffect(() => {
-    fetch("http://localhost:9000/eco2/occitanie")
+    fetch(`http://localhost:9000/eco2/${selectedRegion}`)
       .then((res) => res.json())
       .then((res) => {
         setData(res);
         console.log(res);
       });
-  });
+  }, [selectedRegion]);
 
   const toPercent = (decimal, fixed = 0) =>
     `${(decimal * 100).toFixed(fixed)}%`;

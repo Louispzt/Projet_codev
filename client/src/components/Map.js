@@ -4,7 +4,7 @@ import "leaflet/dist/leaflet.css";
 import "../styles/Map.css";
 import React from "react";
 
-function Map() {
+function Map({ updateRegion }) {
   let countryStyle = {
     fillColor: "red",
     fillOpacity: 0.5,
@@ -25,8 +25,8 @@ function Map() {
     });
   };
 
-  let logRegionName = (event) => {
-    console.log(event.target.feature.properties.nom);
+  let selectRegion = (event) => {
+    updateRegion(event.target.feature.properties.nom);
   };
 
   let onEachRegion;
@@ -35,7 +35,7 @@ function Map() {
     layer.on({
       mouseover: changeRegionColor,
       mouseout: changeBackRegionColor,
-      click: logRegionName,
+      click: selectRegion,
     });
     layer.bindPopup(regionName);
   };

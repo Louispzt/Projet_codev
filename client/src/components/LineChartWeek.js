@@ -54,7 +54,7 @@ const data = [
   },
 ];
 
-function LineChartWeek() {
+function LineChartWeek({ selectedRegion }) {
   return (
     <LineChart
       width={500}

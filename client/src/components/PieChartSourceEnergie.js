@@ -21,7 +21,7 @@ const data02 = [
   { name: "D2", value: 50 },
 ];
 
-function PieChartSourceEnergie() {
+function PieChartSourceEnergie({ selectedRegion }) {
   return (
     <PieChart width={400} height={400}>
       <Pie
