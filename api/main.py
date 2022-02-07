@@ -1,6 +1,6 @@
 import json
 import uvicorn
-import constants
+import utils
 
 from typing import Optional
 from fastapi import FastAPI
@@ -38,21 +38,30 @@ def eCO2_last_24hours():
     return get_eCO2_last_24hours(get_ttl_hash(900))
 
 
+@app.get("/eco2/{region}")
+def eCO2_last_24hours(region: str):
+    """Return the last 24 hours data from eCO2 data"""
+    eco2 = get_eCO2_last_24hours(get_ttl_hash(900))
+    if region in eco2:
+        return eco2[region]
+    return {"Error": "key doesn't exist"}
+
+
 @lru_cache(maxsize=1)
 def get_eCO2_last_24hours(ttl_hash=None):
     """Return the last 24 hours data from eCO2 data.
     Updated every 15 minutes"""
     del ttl_hash
 
-    eco2 = requests.get(constants.eCO2mixLast24hours())
+    eco2 = requests.get(utils.get_eCO2_link_last_24h())
     if eco2.status_code != 200:
-        return {"Error: unreachable"}
-    return json.loads(eco2.text)
+        return {"Error": "unreachable"}
+    return utils.sort_by_region_and_date(json.loads(eco2.text))
 
 
 def get_ttl_hash(seconds):
     """Return the same value withing `seconds` time period"""
-    return round(time() / seconds)
+    return time() // seconds * seconds
 
 
 if __name__ == "__main__":
