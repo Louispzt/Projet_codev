@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import Map from "./modules/Map";
-import LineChartWeek from "./modules/LineChartWeek";
 import LineChart24hEco from "./modules/LineChart24hEco";
 import "./App.css";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 
 class App extends Component {
   constructor(props) {
@@ -20,16 +21,16 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <div className="MapDiv">
-          <Map />
-        </div>
-
-        <div className="ChartDiv">
-          <LineChartWeek />
-          <LineChart24hEco />
-        </div>
-      </div>
+      <Box sx={{ flexGrow: 1 }}>
+        <Grid container spacing={5}>
+          <Grid item xs={6} md={6}>
+            <Map />
+          </Grid>
+          <Grid item xs={6} md={6}>
+            <LineChart24hEco />
+          </Grid>
+        </Grid>
+      </Box>
     );
   }
 }
