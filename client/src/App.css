@@ -1,19 +1,7 @@
 .App {
   text-align: center;
 }
-
-.MapDiv{
-  display: inline-block;
-  width: 49%;
-  vertical-align: top;
-}
-
-.ChartDiv{
-  display: inline-block;
-  width: 49%;
-  vertical-align: top;
-}
-
+git
 .App-logo {
   height: 40vmin;
   pointer-events: none;
