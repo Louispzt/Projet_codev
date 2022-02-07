@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Map from "./modules/Map";
 import LineChartWeek from "./modules/LineChartWeek";
+import LineChart24hEco from "./modules/LineChart24hEco";
 import "./App.css";
 
 class App extends Component {
@@ -27,6 +28,7 @@ class App extends Component {
 
         <div className="ChartDiv">
           <LineChartWeek />
+          <LineChart24hEco />
         </div>
       </div>
     );
