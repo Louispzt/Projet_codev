@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import Map from "./components/Map";
 import LineChart24hEco from "./components/LineChart24hEco";
 import "./App.css";
@@ -7,42 +7,29 @@ import Grid from "@mui/material/Grid";
 import LineChartWeek from "./components/LineChartWeek";
 import PieChartSourceEnergie from "./components/PieChartSourceEnergie";
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { apiResponse: "" };
+function App() {
+  const [selectedRegion, updateRegion] = useState(null);
 
-    this.setState({ apiResponse: this.callAPI() });
-  }
-
-  callAPI() {
-    fetch("http://localhost:9000")
-      .then((res) => res.text())
-      .then((res) => this.setState({ apiResponse: res }));
-  }
-
-  render() {
-    return (
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={5}>
-          <Grid item xs={6} md={6}>
-            <Map />
+  return (
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid container spacing={5}>
+        <Grid item xs={6} md={6}>
+          <Map selectRegion={updateRegion} />
+        </Grid>
+        <Grid item xs={6} md={6}>
+          <Grid item xs={5}>
+            <LineChartWeek selectedRegion={selectedRegion} />
           </Grid>
-          <Grid item xs={6} md={6}>
-            <Grid item xs={5}>
-              <LineChartWeek />
-            </Grid>
-            <Grid item xs={5}>
-              <LineChart24hEco />
-            </Grid>
-            <Grid item xs={5}>
-              <PieChartSourceEnergie />
-            </Grid>
+          <Grid item xs={5}>
+            <LineChart24hEco selectedRegion={selectedRegion} />
+          </Grid>
+          <Grid item xs={5}>
+            <PieChartSourceEnergie selectedRegion={selectedRegion} />
           </Grid>
         </Grid>
-      </Box>
-    );
-  }
+      </Grid>
+    </Box>
+  );
 }
 
 export default App;
