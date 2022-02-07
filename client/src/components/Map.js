@@ -1,26 +1,60 @@
-import GoogleMapReact from "google-map-react";
+import mapData from "../data/regionsFrance.json";
+import { MapContainer as MapLeaf, GeoJSON } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
 import "../styles/Map.css";
-function Map() {
-  const AnyReactComponent = ({ text }) => <div>{text}</div>;
+import React from "react";
 
-  const defaultProps = {
-    center: {
-      lat: 59.95,
-      lng: 30.33,
-    },
-    zoom: 11,
+function Map() {
+  let countryStyle = {
+    fillColor: "red",
+    fillOpacity: 0.5,
+    color: "white",
+    weight: 2,
+  };
+  const color = "red";
+  const onColor = "#FF583B";
+
+  let changeRegionColor = (event) => {
+    event.target.setStyle({
+      fillColor: onColor,
+    });
+  };
+  let changeBackRegionColor = (event) => {
+    event.target.setStyle({
+      fillColor: color,
+    });
+  };
+
+  let logRegionName = (event) => {
+    console.log(event.target.feature.properties.nom);
+  };
+
+  let onEachRegion;
+  onEachRegion = (region, layer) => {
+    const regionName = region.properties.nom;
+    layer.on({
+      mouseover: changeRegionColor,
+      mouseout: changeBackRegionColor,
+      click: logRegionName,
+    });
+    layer.bindPopup(regionName);
   };
 
   return (
-    <div className="map-container">
-      <GoogleMapReact
-        bootstrapURLKeys={{ keys: "" }}
-        defaultCenter={defaultProps.center}
-        defaultZoom={defaultProps.zoom}
-      >
-        <AnyReactComponent lat={59.955413} lng={30.337844} text="My Marker" />
-      </GoogleMapReact>
-    </div>
+    <MapLeaf
+      className={"mapLeaf"}
+      zoom={6}
+      center={[46, 4]}
+      zoomControl={false}
+      maxZoom={6}
+      minZoom={6}
+    >
+      <GeoJSON
+        style={countryStyle}
+        data={mapData.features}
+        onEachFeature={onEachRegion}
+      />
+    </MapLeaf>
   );
 }
 
