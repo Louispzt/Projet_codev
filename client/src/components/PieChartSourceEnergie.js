@@ -1,50 +1,80 @@
 import React from "react";
 import { PieChart, Pie } from "recharts";
 
-const data01 = [
-  { name: "Group A", value: 400 },
-  { name: "Group B", value: 300 },
-  { name: "Group C", value: 300 },
-  { name: "Group D", value: 200 },
-];
-const data02 = [
-  { name: "A1", value: 100 },
-  { name: "A2", value: 300 },
-  { name: "B1", value: 100 },
-  { name: "B2", value: 80 },
-  { name: "B3", value: 40 },
-  { name: "B4", value: 30 },
-  { name: "B5", value: 50 },
-  { name: "C1", value: 100 },
-  { name: "C2", value: 200 },
-  { name: "D1", value: 150 },
-  { name: "D2", value: 50 },
-];
-
 function PieChartSourceEnergie({ selectedRegion }) {
+  const [dataSource, setDataSource] = React.useState([]);
+  const [dataType, setDataType] = React.useState([]);
+  //Make request to API each time selectedRegion change.
+  React.useEffect(() => {
+    fetch(`http://localhost:9000/eco2/sum/${selectedRegion}`)
+      .then((res) => res.json())
+      .then((res) => {
+        let dataSourceTemp = [];
+        let dataTypeTemp = [];
+        const sources = [
+          "thermique",
+          "nucleaire",
+          "solaire",
+          "hydraulique",
+          "bioenergies",
+          "eolien",
+        ];
+        const types = ["non_renewable", "renewable"];
+        for (const source of sources) {
+          dataSourceTemp.push({ name: source, value: res[source] });
+        }
+        for (const type of types) {
+          dataTypeTemp.push({ name: type, value: res[type] });
+        }
+        setDataSource(dataSourceTemp);
+        setDataType(dataTypeTemp);
+      });
+  }, [selectedRegion]);
+  const RADIAN = Math.PI / 180;
+
+  const renderCustomizedLabel = ({
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    percent,
+    index,
+  }) => {
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+    return dataSource[index].name;
+  };
+
   return (
     <PieChart width={400} height={400}>
       <Pie
         startAngle={180}
         endAngle={0}
-        data={data01}
+        data={dataType}
         dataKey="value"
         cx={200}
         cy={200}
         outerRadius={60}
         fill="#8884d8"
+        key={Math.random()}
       />
       <Pie
         startAngle={180}
         endAngle={0}
-        data={data02}
+        data={dataSource}
         dataKey="value"
         cx={200}
         cy={200}
+        key={Math.random()}
         innerRadius={70}
-        outerRadius={90}
+        outerRadius={120}
+        isAnimationActive={true}
+        legendType="line"
+        label={renderCustomizedLabel}
         fill="#82ca9d"
-        label
       />
     </PieChart>
   );

@@ -8,7 +8,7 @@ import {
   Tooltip,
 } from "recharts";
 
-function LineChart24hEco({ selectedRegion }) {
+function AreaChartEcoSource({ selectedRegion }) {
   const [data, setData] = React.useState(null);
 
   //Make request to API each time selectedRegion change.
@@ -17,7 +17,6 @@ function LineChart24hEco({ selectedRegion }) {
       .then((res) => res.json())
       .then((res) => {
         setData(res);
-        console.log(res);
       });
   }, [selectedRegion]);
 
@@ -52,8 +51,8 @@ function LineChart24hEco({ selectedRegion }) {
   };
   return (
     <AreaChart
-      width={500}
-      height={400}
+      width={400}
+      height={200}
       data={data}
       stackOffset="expand"
       margin={{
@@ -64,7 +63,7 @@ function LineChart24hEco({ selectedRegion }) {
       }}
     >
       <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="date" />
+      <XAxis dataKey="jour_heure" />
       <YAxis tickFormatter={toPercent} />
       <Tooltip content={renderTooltipContent} />
       <Area
@@ -99,4 +98,4 @@ function LineChart24hEco({ selectedRegion }) {
   );
 }
 
-export default LineChart24hEco;
+export default AreaChartEcoSource;

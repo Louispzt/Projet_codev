@@ -1,27 +1,28 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import Map from "./components/Map";
-import LineChart24hEco from "./components/LineChart24hEco";
+import AreaChartEcoSource from "./components/AreaChartEcoSource";
 import "./App.css";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import LineChartWeek from "./components/LineChartWeek";
+import LineCharteEcoConso from "./components/LineCharteEcoConso";
 import PieChartSourceEnergie from "./components/PieChartSourceEnergie";
 
 function App() {
-  const [selectedRegion, updateRegion] = useState(null);
+  const [selectedRegion, updateRegion] = useState("all");
 
+  const updateRegionFormat = (region) => updateRegion(region.toLowerCase());
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={5}>
         <Grid item xs={6} md={6}>
-          <Map selectRegion={updateRegion} />
+          <Map updateRegion={updateRegionFormat} />
         </Grid>
         <Grid item xs={6} md={6}>
           <Grid item xs={5}>
-            <LineChartWeek selectedRegion={selectedRegion} />
+            <LineCharteEcoConso selectedRegion={selectedRegion} />
           </Grid>
           <Grid item xs={5}>
-            <LineChart24hEco selectedRegion={selectedRegion} />
+            <AreaChartEcoSource selectedRegion={selectedRegion} />
           </Grid>
           <Grid item xs={5}>
             <PieChartSourceEnergie selectedRegion={selectedRegion} />
