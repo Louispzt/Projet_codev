@@ -28,7 +28,6 @@ function PieChartSourceEnergie({ selectedRegion }) {
         }
         setDataSource(dataSourceTemp);
         setDataType(dataTypeTemp);
-        console.log(dataSourceTemp);
       });
   }, [selectedRegion]);
   const RADIAN = Math.PI / 180;

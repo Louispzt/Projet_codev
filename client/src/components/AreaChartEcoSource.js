@@ -17,7 +17,6 @@ function AreaChartEcoSource({ selectedRegion }) {
       .then((res) => res.json())
       .then((res) => {
         setData(res);
-        console.log(res);
       });
   }, [selectedRegion]);
 

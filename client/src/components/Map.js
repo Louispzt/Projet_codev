@@ -26,7 +26,6 @@ function Map({ updateRegion }) {
   };
 
   let selectRegion = (event) => {
-    console.log(event.target.feature.properties.nom);
     updateRegion(event.target.feature.properties.nom);
   };
 
