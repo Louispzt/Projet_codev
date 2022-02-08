@@ -1,4 +1,7 @@
+from pyparsing import col
+import constants
 from datetime import datetime, timedelta
+import pandas as pd
 
 
 def get_eCO2_link_last_24h():
@@ -9,23 +12,39 @@ def get_eCO2_link_last_24h():
             start.strftime("%Y-%m-%dT%H:%M:%S"), to.strftime("%Y-%m-%dT%H:%M:%S"))
 
 
-def sort_by_region_and_date(data):
-    eco2 = {}
-    for records in data["records"]:
-        fields = records["fields"]
+def get_sum(dataframe: pd.DataFrame):
+    df = dataframe.groupby(["jour_heure"], as_index=False, sort=False)
+    return df.sum().round(2)
 
-        if len(fields) < 7:
+
+def get_renewable_info(dataframe: pd.DataFrame):
+    df = dataframe.drop(columns=["jour_heure"])
+    df = df.groupby(["region"], as_index=False, sort=False).sum()
+    df["renewable"] = df[list(constants.ECO2_KEYS_SUBSTAINABLE)].sum(axis=1)
+    df["non_renewable"] = df.sum(axis=1) - df["renewable"]
+    return df.round(2)
+
+
+def get_dataframe_region(query: dict):
+    daily_data = []
+    for records in query["records"]:
+        fields = records["fields"]
+        jour_heure = datetime.strptime(
+            fields["date_heure"], "%Y-%m-%dT%H:%M:%S%z").strftime("%A %H:%M")
+
+        value = {key: fields[key]
+                 for key in constants.ECO2_KEYS if key in fields}
+
+        if not value:
             continue
 
-        region = fields["libelle_region"].lower()
-        date = "{} {}".format(fields["date"], fields["heure"])
+        value["region"] = fields["libelle_region"]
+        value["jour_heure"] = jour_heure
 
-        selected_fields = {key: value for key, value in fields.items(
-        ) if key not in ("libelle_region", "date", "heure", "date_heure")}
-        selected_fields["date"] = date
+        daily_data.append(value)
+    df = pd.DataFrame(daily_data, columns=(
+        "region", "jour_heure") + constants.ECO2_KEYS)
+    df["region"] = df["region"].str.lower()
+    return df
 
-        if region in eco2:
-            eco2[region].append(selected_fields)
-        else:
-            eco2[region] = [selected_fields]
-    return eco2
+# rates mais par région
