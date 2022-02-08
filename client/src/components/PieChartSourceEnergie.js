@@ -28,7 +28,15 @@ function PieChartSourceEnergie({ selectedRegion }) {
         }
         setDataSource(dataSourceTemp);
         setDataType(dataTypeTemp);
+      })
+      .catch((error) => {
+        setDataSource([]);
+        setDataType([]);
+        console.log(
+          `API not responding PieChart -> http://localhost:9000/eco2/${selectedRegion}\n${error}`
+        );
       });
+    return () => {};
   }, [selectedRegion]);
   const RADIAN = Math.PI / 180;
 

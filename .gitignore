@@ -28,3 +28,4 @@ $.env.production.local
 
 # IntelliJ
 */.idea/
+.idea/workspace.xml

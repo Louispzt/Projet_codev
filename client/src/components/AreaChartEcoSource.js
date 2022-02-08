@@ -11,13 +11,21 @@ import {
 function AreaChartEcoSource({ selectedRegion }) {
   const [data, setData] = React.useState(null);
 
+  const fetchData = () => {};
   //Make request to API each time selectedRegion change.
   React.useEffect(() => {
     fetch(`http://localhost:9000/eco2/${selectedRegion}`)
       .then((res) => res.json())
       .then((res) => {
         setData(res);
+      })
+      .catch((error) => {
+        setData([]);
+        console.log(
+          `API not responding AreaChart -> http://localhost:9000/eco2/${selectedRegion}\n${error}`
+        );
       });
+    return () => {};
   }, [selectedRegion]);
 
   const toPercent = (decimal, fixed = 0) =>
