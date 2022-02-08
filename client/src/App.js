@@ -14,11 +14,11 @@ function App() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={5}>
-        <Grid item xs={6} md={6}>
+        <Grid item xs={10} md={5}>
           <Map updateRegion={updateRegionFormat} />
         </Grid>
-        <Grid item xs={6} md={6}>
-          <Grid item xs={5}>
+        <Grid item xs={10} md={5}>
+          <Grid item xs={10}>
             <LineCharteEcoConso selectedRegion={selectedRegion} />
           </Grid>
           <Grid item xs={5}>

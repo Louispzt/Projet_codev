@@ -18,7 +18,14 @@ function LineCharteEcoConso({ selectedRegion }) {
       .then((res) => res.json())
       .then((res) => {
         setData(res);
+      })
+      .catch((error) => {
+        setData([]);
+        console.log(
+          `API not responding LineChart-> http://localhost:9000/eco2/${selectedRegion}\n${error}`
+        );
       });
+    return () => {};
   }, [selectedRegion]);
   return (
     <LineChart
