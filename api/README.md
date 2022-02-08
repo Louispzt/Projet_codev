@@ -42,8 +42,6 @@ Installation of the dependencies required for the project:
 Then, to launch the bot simply type:
 
 ```bash
-# start the discord bot
-(venv) ... $> python main.py
-# start the telegram bot
-(venv) ... $> python JoeTelegramBot.py
+# start the API
+(venv) ... $> python3 main.py
 ```
