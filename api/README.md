@@ -23,8 +23,6 @@ Presentation of energy data
 Build the Backend and Frontend parts
 Demonstration
 
-Translated with www.DeepL.com/Translator (free version)
-
 # Installation
 
 ### Use Virtualenv
