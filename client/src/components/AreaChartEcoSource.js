@@ -39,6 +39,7 @@ function AreaChartEcoSource({ selectedRegion }) {
 
   const renderTooltipContent = (o) => {
     const { payload = [], label } = o;
+    if (payload == null) return <div></div>;
     const total = payload.reduce((result, entry) => result + entry.value, 0);
 
     return (
