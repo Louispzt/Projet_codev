@@ -1,9 +1,11 @@
-import mapData from "../data/regionsFrance.json";
+import mapData from "../../data/regionsFrance.json";
 import { MapContainer as MapLeaf, GeoJSON } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import "../styles/Map.css";
+import "../../styles/Map.css";
 import React from "react";
-
+import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import { Box } from "@mui/system";
 function Map({ updateRegion }) {
   let countryStyle = {
     fillColor: "red",
@@ -41,20 +43,31 @@ function Map({ updateRegion }) {
   };
 
   return (
-    <MapLeaf
-      className={"mapLeaf"}
-      zoom={6}
-      center={[46, 4]}
-      zoomControl={false}
-      maxZoom={6}
-      minZoom={6}
-    >
-      <GeoJSON
-        style={countryStyle}
-        data={mapData.features}
-        onEachFeature={onEachRegion}
-      />
-    </MapLeaf>
+    <div>
+      <Box>
+        <ButtonGroup
+          variant="contained"
+          aria-label="outlinded primary button group"
+        >
+          <Button>Consomation</Button>
+          <Button>Renouvelable</Button>
+        </ButtonGroup>
+      </Box>
+      <MapLeaf
+        className={"mapLeaf"}
+        zoom={6}
+        center={[46, 4]}
+        zoomControl={false}
+        maxZoom={6}
+        minZoom={6}
+      >
+        <GeoJSON
+          style={countryStyle}
+          data={mapData.features}
+          onEachFeature={onEachRegion}
+        />
+      </MapLeaf>
+    </div>
   );
 }
 

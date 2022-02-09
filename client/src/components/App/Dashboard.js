@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import Map from "./Map";
-import AreaChartEcoSource from "./AreaChartEcoSource";
+import Map from "../Map/Map";
+import AreaChartEcoSource from "../Graphs/AreaChartEcoSource";
+import LineCharteEcoConso from "../Graphs/LineCharteEcoConso";
+import PieChartSourceEnergie from "../Graphs/PieChartSourceEnergie";
+import ButtonAppBar from "./ButtonAppBar";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import LineCharteEcoConso from "./LineCharteEcoConso";
-import PieChartSourceEnergie from "./PieChartSourceEnergie";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
-import ButtonAppBar from "./ButtonAppBar";
 
 export default function Dashboard() {
   const [selectedRegion, updateRegion] = useState("all");
