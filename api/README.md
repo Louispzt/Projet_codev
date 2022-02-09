@@ -33,15 +33,26 @@ Installation of the dependencies required for the project:
 
 ```bash
 # activation of the virtual environment
-... $> source venv/bin/activate
+... $> source .venv/bin/activate
 
 # installation of dependencies (only after having activated the virtual environment!)
-(venv) ... $> pip install -r requirements.txt
+(.venv) ... $> pip3 install -r requirements.txt
+```
+
+Don't forget to add a SECRET_KEY:
+
+```bash
+# Create a .env file
+(.venv) ... $> cp .env.example .env
+# You can create a SECRET_KEY with
+(.venv) ... $> openssl rand -hex 32
+# Add the SECRET_KEY
+(.venv) ... $> nano .env
 ```
 
 Then, to launch the bot simply type:
 
 ```bash
 # start the API
-(venv) ... $> python3 main.py
+(.venv) ... $> python3 main.py
 ```

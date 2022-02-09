@@ -1,7 +1,7 @@
-from pyparsing import col
 import constants
-from datetime import datetime, timedelta
 import pandas as pd
+
+from datetime import datetime, timedelta
 
 
 def get_eCO2_link_last_24h():
@@ -46,5 +46,3 @@ def get_dataframe_region(query: dict):
         "region", "jour_heure") + constants.ECO2_KEYS)
     df["region"] = df["region"].str.lower()
     return df
-
-# rates mais par région
