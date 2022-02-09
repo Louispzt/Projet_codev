@@ -17,7 +17,7 @@
 import { LockClosedIcon } from "@heroicons/react/solid";
 import PropTypes from "prop-types";
 import { useState } from "react";
-import ButtonAppBar from "./ButtonAppBar";
+import ButtonAppBar from "../App/ButtonAppBar";
 
 async function loginUser(credentials) {
   return "123456789";
