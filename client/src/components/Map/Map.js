@@ -2,36 +2,19 @@ import mapData from "../../data/regionsFrance.json";
 import { MapContainer as MapLeaf, GeoJSON } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "../../styles/Map.css";
-import React, { useState } from "react";
+import React from "react";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { Box } from "@mui/system";
 function Map({ updateRegion }) {
-  const [infoMap, setInfoMap] = useState(null);
-  let color;
-  switch (infoMap) {
-    case null:
-      color = "red";
-      break;
-    case "Consommation":
-      color = "Blue";
-      break;
-    case "Renouvelable":
-      color = "green";
-      break;
-  }
-  const onColor = "#FF583B";
-
-  const renderCountries = (country) => {
-    console.log(color);
-    console.log(country);
-    return {
-      fillColor: color,
-      fillOpacity: 0.5,
-      color: "white",
-      weight: 2,
-    };
+  let countryStyle = {
+    fillColor: "red",
+    fillOpacity: 0.5,
+    color: "white",
+    weight: 2,
   };
+  const color = "red";
+  const onColor = "#FF583B";
 
   let changeRegionColor = (event) => {
     event.target.setStyle({
@@ -61,17 +44,13 @@ function Map({ updateRegion }) {
 
   return (
     <div>
-      <Box sx={{ margin: 1 }}>
+      <Box>
         <ButtonGroup
           variant="contained"
           aria-label="outlinded primary button group"
         >
-          <Button onClick={() => setInfoMap("Consommation")}>
-            Consommation
-          </Button>
-          <Button onClick={() => setInfoMap("Renouvelable")}>
-            Renouvelable
-          </Button>
+          <Button>Consomation</Button>
+          <Button>Renouvelable</Button>
         </ButtonGroup>
       </Box>
       <MapLeaf
@@ -83,7 +62,7 @@ function Map({ updateRegion }) {
         minZoom={6}
       >
         <GeoJSON
-          style={renderCountries}
+          style={countryStyle}
           data={mapData.features}
           onEachFeature={onEachRegion}
         />
