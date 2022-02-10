@@ -1,26 +1,30 @@
-from datetime import timedelta
-from database import SessionLocal, engine
+import os
+import json
+from time import time
+
+from dotenv import load_dotenv
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.middleware.cors import CORSMiddleware
 from functools import lru_cache
 from sqlalchemy.orm import Session
-from time import time
+import requests
+import uvicorn
 
 import authentification
+import constants
 import crud
-import json
+from database import SessionLocal, engine
 import models
-import requests
 import schemas
 import utils
-import uvicorn
+
+load_dotenv()
 
 models.Base.metadata.create_all(bind=engine)
 
-
 app = FastAPI()
-
 
 origins = ["*"]
 
@@ -31,7 +35,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-# Dependency
 
 
 def get_db():
@@ -42,12 +45,8 @@ def get_db():
         db.close()
 
 
-# User related
 async def get_current_user(token: str = Depends(authentification.oauth2_scheme), db: SessionLocal = Depends(get_db)):
-    try:
-        return await authentification.get_current_user(token, db)
-    except Exception:
-        raise Exception
+    return await authentification.get_current_user(token, db)
 
 
 async def get_current_active_user(current_user: schemas.User = Depends(get_current_user)):
@@ -60,7 +59,7 @@ async def get_current_active_user(current_user: schemas.User = Depends(get_curre
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = authentification.authenticate_user(
         db, form_data.username, form_data.password)
-    if not user:
+    if user is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username or password",
@@ -71,48 +70,48 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-@app.get("/me", response_model=schemas.User)
+@app.get("/me", response_model=schemas.UserRead)
 async def read_users_me(current_user: schemas.User = Depends(get_current_active_user)):
-    return current_user
+    return schemas.UserRead(
+        username=current_user.username,
+        bookmarks=current_user.bookmarks
+    )
 
 
 @app.post("/me/add_bookmark", response_model=schemas.Bookmark)
 def create_bookmark_for_user(new_bookmark: schemas.BookmarkCreate, current_user: schemas.User = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    if len([b for b in current_user.bookmarks if b.title == new_bookmark.title]) == 0:
-        return crud.create_user_bookmark(db, new_bookmark=new_bookmark, user_id=current_user.id)
-    raise HTTPException(status_code=400, detail="bookmark already exists")
+    try:
+        crud.create_user_bookmark(
+            db, new_bookmark=new_bookmark, user_id=current_user.id)
+    except:
+        raise HTTPException(status_code=400, detail="bookmark already exists")
 
 
 @app.post("/me/delete_bookmark", response_model=dict)
 def delete_bookmark_for_user(bookmark: schemas.BookmarkBase, current_user: schemas.User = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    db_bookmarks = [
-        b for b in current_user.bookmarks if b.title == bookmark.title]
-    if len(db_bookmarks) == 1:
-        return crud.delete_user_bookmark(db, db_user=current_user, db_bookmark=db_bookmarks[0])
-    raise HTTPException(status_code=400, detail="bookmark doesn't exist")
+    crud.delete_user_bookmark(
+        db, current_user, bookmark)
 
 
-@app.post("/signup", response_model=schemas.User)
-def create_user(user: schemas.UserInDb, db: Session = Depends(get_db)):
+@app.post("/signup")
+def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = crud.read_user(db, user.username)
     if db_user is None:
-        return crud.create_user(db, user.username, authentification.get_password_hash(user.hashed_password))
-    raise HTTPException(status_code=400, detail="user already exists")
+        return crud.create_user(db, user.username, authentification.get_password_hash(user.password))
 
 
-@app.post("/delete", response_model=dict)
-def delet_user(current_user: schemas.User = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    return crud.delete_user(db, current_user)
+@app.post("/delete")
+def delete_user(current_user: schemas.User = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    crud.delete_user(db, current_user)
 
 
-@app.post("/update", response_model=dict)
+@app.post("/update")
 def update_user(new_password: str, new_password_2, current_user: schemas.User = Depends(get_current_active_user), db: Session = Depends(get_db)):
     if new_password == new_password_2:
         return crud.update_user(db, current_user, authentification.get_password_hash(new_password))
     raise HTTPException(status_code=400, detail="passwords don't match")
 
 
-# Actual API
 @app.get("/")
 async def read_root():
     return {"API is working properly"}
@@ -143,17 +142,15 @@ async def eCO2_info_per_region(region: str, token: str = Depends(authentificatio
     return json.loads(df.to_json(orient="records"))
 
 
-# Cache
 @lru_cache(maxsize=1)
 def get_eCO2_info(ttl_hash=None):
     """Return the last 24 hours data from eCO2 data.
     Updated every 15 minutes"""
     del ttl_hash
 
-    eco2 = requests.get(utils.get_eCO2_link_last_24h())
-    if eco2.status_code != 200:
-        return {"Error": "unreachable"}
-    return utils.get_dataframe_region(json.loads(eco2.text))
+    response = requests.get(constants.ECO2_URL, params=utils.eCO2_24h_params())
+    response.raise_for_status()
+    return utils.get_dataframe_region(response.json())
 
 
 def get_ttl_hash(seconds: int):
@@ -162,4 +159,4 @@ def get_ttl_hash(seconds: int):
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", port=9000, reload=True)
+    uvicorn.run("main:app", port=int(os.environ["API_PORT"]), reload=True)

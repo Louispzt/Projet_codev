@@ -1,5 +1,4 @@
 from typing import Optional
-
 from pydantic import BaseModel
 
 
@@ -22,6 +21,14 @@ class UserBase(BaseModel):
 
 class UserInDb(UserBase):
     hashed_password: str
+
+
+class UserCreate(UserBase):
+    password: str
+
+
+class UserRead(UserBase):
+    bookmarks: list[Bookmark] = []
 
 
 class User(UserBase):

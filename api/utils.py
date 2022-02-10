@@ -1,15 +1,20 @@
-import constants
-import pandas as pd
-
 from datetime import datetime, timedelta
 
+import pandas as pd
 
-def get_eCO2_link_last_24h():
-    to = datetime.now()
-    start = to - timedelta(hours=23, minutes=59, seconds=59)
-    return "https://opendata.reseaux-energies.fr/api/records/1.0/search/?dataset=eco2mix-regional-tr&q=date_heure%3A%5B{}"\
-        "Z+TO+{}Z%5D&rows=10000&sort=-date_heure&facet=libelle_region&facet=nature&facet=date_heure".format(
-            start.strftime("%Y-%m-%dT%H:%M:%S"), to.strftime("%Y-%m-%dT%H:%M:%S"))
+import constants
+
+
+def eCO2_24h_params():
+    now = datetime.now()
+    start = now - timedelta(hours=23, minutes=59, seconds=59)
+    to = now
+    return {
+        "dataset": "eco2mix-regional-tr",
+        "date_heure": f"{start.isoformat()} TO {to.isoformat()}",
+        "rows": "1152",
+        "sort": "-date_heure"
+    }
 
 
 def get_sum(dataframe: pd.DataFrame):
@@ -33,7 +38,7 @@ def get_dataframe_region(query: dict):
             fields["date_heure"], "%Y-%m-%dT%H:%M:%S%z").strftime("%A %H:%M")
 
         value = {key: fields[key]
-                 for key in constants.ECO2_KEYS if key in fields}
+                 for key in constants.EC02_KEYS if key in fields}
 
         if not value:
             continue
@@ -43,6 +48,6 @@ def get_dataframe_region(query: dict):
 
         daily_data.append(value)
     df = pd.DataFrame(daily_data, columns=(
-        "region", "jour_heure") + constants.ECO2_KEYS)
+        "region", "jour_heure") + constants.EC02_KEYS)
     df["region"] = df["region"].str.lower()
     return df
