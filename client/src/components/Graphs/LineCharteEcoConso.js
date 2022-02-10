@@ -14,7 +14,11 @@ function LineCharteEcoConso({ selectedRegion }) {
 
   //Make request to API each time selectedRegion change.
   React.useEffect(() => {
-    fetch(`http://localhost:9000/eco2/${selectedRegion}`)
+    fetch(`http://localhost:9000/eco2/${selectedRegion}`, {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    })
       .then((res) => res.json())
       .then((res) => {
         setData(res);

@@ -20,27 +20,49 @@ import { useState } from "react";
 import ButtonAppBar from "../App/ButtonAppBar";
 
 async function loginUser(credentials) {
-  return "123456789";
-  return fetch("http://localhost:9000/login", {
+  const { password, username } = credentials;
+
+  return fetch("http://localhost:9000/token", {
     method: "POST",
+    mode: "cors",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/x-www-form-urlencoded",
     },
-    body: JSON.stringify(credentials),
+    body: `password=${password}&username=${username}`,
   }).then((data) => data.json());
 }
 
+async function signUp(credentials) {
+  const { password, username } = credentials;
+
+  return fetch("http://localhost:9000/signup", {
+    method: "POST",
+    mode: "cors",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ hashed_password: password, username: username }),
+  }).then((data) => data.json());
+}
 export default function Login({ setToken }) {
-  const [mail, setMail] = useState();
+  const [username, setUsername] = useState();
   const [password, setPassword] = useState();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = await loginUser({
-      mail,
+      username,
+      password: password,
+    });
+    setToken(token.access_token);
+  };
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    const created = await signUp({
+      username,
       password,
     });
-    setToken(token);
   };
   return (
     <>
@@ -65,7 +87,7 @@ export default function Login({ setToken }) {
               Connectez vous à votre compte
             </h2>
           </div>
-          <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          <form className="mt-8 space-y-6">
             <input type="hidden" name="remember" defaultValue="true" />
             <div className="rounded-md shadow-sm -space-y-px">
               <div>
@@ -80,7 +102,7 @@ export default function Login({ setToken }) {
                   required
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Adresse Mail"
-                  onChange={(e) => setMail(e.target.value)}
+                  onChange={(e) => setUsername(e.target.value)}
                 />
               </div>
               <div>
@@ -100,25 +122,9 @@ export default function Login({ setToken }) {
               </div>
             </div>
 
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  id="remember-me"
-                  name="remember-me"
-                  type="checkbox"
-                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                />
-                <label
-                  htmlFor="remember-me"
-                  className="ml-2 block text-sm text-gray-900"
-                >
-                  Remember me
-                </label>
-              </div>
-            </div>
-
             <div>
               <button
+                onClick={handleSubmit}
                 type="submit"
                 className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
@@ -128,7 +134,22 @@ export default function Login({ setToken }) {
                     aria-hidden="true"
                   />
                 </span>
-                Sign in
+                Se connecter
+              </button>
+            </div>
+            <div>
+              <button
+                onClick={handleSignUp}
+                type="submit"
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+                  <LockClosedIcon
+                    className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
+                    aria-hidden="true"
+                  />
+                </span>
+                Créer un compte
               </button>
             </div>
           </form>
