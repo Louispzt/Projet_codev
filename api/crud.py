@@ -5,8 +5,7 @@ import schemas
 
 
 def create_user(db: Session, username: str, hashed_password: str):
-    db_user = models.User(
-        username=username, hashed_password=hashed_password)
+    db_user = models.User(username=username, hashed_password=hashed_password)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -31,15 +30,14 @@ def update_user(db: Session, db_user: schemas.UserInDb, new_hashed_password: str
 
 
 def delete_user(db: Session, user: schemas.User):
-    db.query(models.User).filter(
-        models.User.username == user.username
-    ).delete()
+    db.query(models.User).filter(models.User.username == user.username).delete()
     db.commit()
 
 
-def delete_user_bookmark(db: Session, user: schemas.User, bookmark: schemas.BookmarkBase):
+def delete_user_bookmark(
+    db: Session, user: schemas.User, bookmark: schemas.BookmarkBase
+):
     db.query(models.Bookmark).filter(
-        models.Bookmark.title == bookmark.title,
-        models.Bookmark.owner_id == user.id
+        models.Bookmark.title == bookmark.title, models.Bookmark.owner_id == user.id
     ).delete()
     db.commit()
