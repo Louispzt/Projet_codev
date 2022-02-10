@@ -1,11 +1,11 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, PrimaryKeyConstraint, String
 from sqlalchemy.orm import relationship
 
 from database import Base
 
 
 class User(Base):
-    __tablename__ = "users"
+    __tablename__ = "user"
 
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String, unique=True, index=True)
@@ -17,23 +17,15 @@ class User(Base):
 
 
 class Bookmark(Base):
-    __tablename__ = "bookmarks"
+    __tablename__ = "bookmark"
 
-    title = Column(String, primary_key=True, index=True)
+    title = Column(String, index=True)
     description = Column(String, index=True)
     owner_id = Column(Integer, ForeignKey(
-        "users.id", ondelete="CASCADE"), nullable=False)
+        "user.id", ondelete="CASCADE"), nullable=False)
+
+    __table_args__ = (
+        PrimaryKeyConstraint(title, owner_id),
+    )
 
     owner = relationship("User", back_populates="bookmarks")
-
-
-def ResponseModel(data, message):
-    return {
-        "data": [data],
-        "code": 200,
-        "message": message,
-    }
-
-
-def ErrorResponseModel(error, code, message):
-    return {"error": error, "code": code, "message": message}
