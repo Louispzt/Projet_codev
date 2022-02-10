@@ -3,8 +3,9 @@ export default function useFav({ token }) {
   const getFav = ({ token }) => {
     console.log(token);
 
-    fetch(`http://localhost:9000/me`, {
+    fetch(`https://apicodev.deta.dev/me`, {
       headers: {
+        "Access-Control-Allow-Origin": "https://apicodev.deta.dev/",
         Authorization: `Bearer ${token}`,
       },
     })
@@ -17,17 +18,18 @@ export default function useFav({ token }) {
       .catch((error) => {
         setData([]);
         console.log(
-          `API not responding me -> http://localhost:9000/me\n${error}`
+          `API not responding me -> https://apicodev.deta.dev/me\n${error}`
         );
       });
   };
 
   const setFav = ({ selectedRegion, token }) => {
-    fetch("http://localhost:9000/me/add_bookmark", {
+    fetch("https://apicodev.deta.dev/me/add_bookmark", {
       method: "POST",
       mode: "cors",
       headers: {
         "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "https://apicodev.deta.dev/",
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
@@ -38,11 +40,12 @@ export default function useFav({ token }) {
   };
 
   const deleteFav = ({ token }) => {
-    fetch("http://localhost:9000/me/delete_bookmark", {
+    fetch("https://apicodev.deta.dev/me/delete_bookmark", {
       method: "POST",
       mode: "cors",
       headers: {
         "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "https://apicodev.deta.dev/",
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({

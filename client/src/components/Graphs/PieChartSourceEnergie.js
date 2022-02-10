@@ -6,9 +6,10 @@ function PieChartSourceEnergie({ selectedRegion, token }) {
   const [dataType, setDataType] = React.useState([]);
   //Make request to API each time selectedRegion change.
   React.useEffect(() => {
-    fetch(`http://localhost:9000/eco2/sum/${selectedRegion}`, {
+    fetch(`https://apicodev.deta.dev/eco2/sum/${selectedRegion}`, {
       headers: {
         Authorization: `Bearer ${token}`,
+        "Access-Control-Allow-Origin": "https://apicodev.deta.dev/",
       },
     })
       .then((res) => res.json())
@@ -37,7 +38,7 @@ function PieChartSourceEnergie({ selectedRegion, token }) {
         setDataSource([]);
         setDataType([]);
         console.log(
-          `API not responding PieChart -> http://localhost:9000/eco2/${selectedRegion}\n${error}`
+          `API not responding PieChart -> https://apicodev.deta.dev/eco2/${selectedRegion}\n${error}`
         );
       });
     return () => {};

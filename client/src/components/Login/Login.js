@@ -6,11 +6,12 @@ import ButtonAppBar from "../App/ButtonAppBar";
 async function loginUser(credentials) {
   const { password, username } = credentials;
 
-  return fetch("http://localhost:9000/token", {
+  return fetch("https://apicodev.deta.dev/token", {
     method: "POST",
     mode: "cors",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
+      "Access-Control-Allow-Origin": "https://apicodev.deta.dev/",
     },
     body: `password=${password}&username=${username}`,
   }).then((data) => data.json());
@@ -19,11 +20,12 @@ async function loginUser(credentials) {
 async function signUp(credentials) {
   const { password, username } = credentials;
 
-  return fetch("http://localhost:9000/signup", {
+  return fetch("https://apicodev.deta.dev/signup", {
     method: "POST",
     mode: "cors",
     headers: {
       "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "https://apicodev.deta.dev/",
     },
     body: JSON.stringify({ password: password, username: username }),
   }).then((data) => data.json());

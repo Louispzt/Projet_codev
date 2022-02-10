@@ -14,9 +14,10 @@ function AreaChartEcoSource({ selectedRegion, token }) {
   const fetchData = () => {};
   //Make request to API each time selectedRegion change.
   React.useEffect(() => {
-    fetch(`http://localhost:9000/eco2/${selectedRegion}`, {
+    fetch(`https://apicodev.deta.dev/eco2/${selectedRegion}`, {
       headers: {
         Authorization: `Bearer ${token}`,
+        "Access-Control-Allow-Origin": "https://apicodev.deta.dev/",
       },
     })
       .then((res) => res.json())
@@ -26,7 +27,7 @@ function AreaChartEcoSource({ selectedRegion, token }) {
       .catch((error) => {
         setData([]);
         console.log(
-          `API not responding AreaChart -> http://localhost:9000/eco2/${selectedRegion}\n${error}`
+          `API not responding AreaChart -> https://apicodev.deta.dev/eco2/${selectedRegion}\n${error}`
         );
       });
     return () => {};

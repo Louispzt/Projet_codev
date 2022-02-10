@@ -8,8 +8,9 @@ import ButtonAppBar from "./ButtonAppBar";
 import { Paper, Grid, Box, styled } from "@mui/material";
 
 const getFav = ({ token }) => {
-  fetch(`http://localhost:9000/me`, {
+  fetch(`https://apicodev.deta.dev/me`, {
     headers: {
+      "Access-Control-Allow-Origin": "https://apicodev.deta.dev/",
       Authorization: `Bearer ${token}`,
     },
   })
@@ -21,7 +22,7 @@ const getFav = ({ token }) => {
     .catch((error) => {
       setData([]);
       console.log(
-        `API not responding me -> http://localhost:9000/me\n${error}`
+        `API not responding me -> https://apicodev.deta.dev/me\n${error}`
       );
       return null;
     });
@@ -38,8 +39,9 @@ export default function Dashboard({ token, setToken }) {
   const [selectedRegion, updateRegion] = useState("all");
 
   useEffect(() => {
-    fetch(`http://localhost:9000/me`, {
+    fetch(`https://apicodev.deta.dev/me`, {
       headers: {
+        "Access-Control-Allow-Origin": "https://apicodev.deta.dev/",
         Authorization: `Bearer ${token}`,
       },
     })
@@ -52,7 +54,7 @@ export default function Dashboard({ token, setToken }) {
       .catch((error) => {
         setData([]);
         console.log(
-          `API not responding me -> http://localhost:9000/me\n${error}`
+          `API not responding me -> https://apicodev.deta.dev/me\n${error}`
         );
         return null;
       });

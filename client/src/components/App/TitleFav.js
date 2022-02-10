@@ -6,7 +6,7 @@ import { IconButton, Typography, Box } from "@mui/material";
 export default function TitleFav({ token, selectedRegion }) {
   function deleteFav(token) {
     console.log(token);
-    fetch("http://localhost:9000/me/delete_bookmark", {
+    fetch("https://apicodev.deta.dev/me/delete_bookmark", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -21,7 +21,7 @@ export default function TitleFav({ token, selectedRegion }) {
 
   function setFav(selectedRegion, token) {
     deleteFav(token);
-    fetch("http://localhost:9000/me/add_bookmark", {
+    fetch("https://apicodev.deta.dev/me/add_bookmark", {
       method: "POST",
       mode: "cors",
       headers: {
@@ -37,7 +37,7 @@ export default function TitleFav({ token, selectedRegion }) {
   const [fav, setFavIcon] = useState(false);
   console.log(token);
   useEffect(() => {
-    fetch(`http://localhost:9000/me`, {
+    fetch(`https://apicodev.deta.dev/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -53,7 +53,7 @@ export default function TitleFav({ token, selectedRegion }) {
       .catch((error) => {
         setData([]);
         console.log(
-          `API not responding me -> http://localhost:9000/me\n${error}`
+          `API not responding me -> https://apicodev.deta.dev/me\n${error}`
         );
         return null;
       });
