@@ -23,8 +23,8 @@ function Map({ updateRegion }) {
   const onColor = "#FF583B";
 
   const renderCountries = (country) => {
-    console.log(color);
-    console.log(country);
+    //console.log(color);
+    //console.log(country);
     return {
       fillColor: color,
       fillOpacity: 0.5,

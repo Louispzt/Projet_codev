@@ -1,24 +1,64 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Map from "../Map/Map";
 import AreaChartEcoSource from "../Graphs/AreaChartEcoSource";
 import LineCharteEcoConso from "../Graphs/LineCharteEcoConso";
 import PieChartSourceEnergie from "../Graphs/PieChartSourceEnergie";
+import TitleFav from "./TitleFav";
 import ButtonAppBar from "./ButtonAppBar";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import { styled } from "@mui/material/styles";
-import Paper from "@mui/material/Paper";
+import { Paper, Grid, Box, styled } from "@mui/material";
+
+const getFav = ({ token }) => {
+  fetch(`http://localhost:9000/me`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.bookmarks.length > 0) return res.bookmarks[0].description;
+      else return "all";
+    })
+    .catch((error) => {
+      setData([]);
+      console.log(
+        `API not responding me -> http://localhost:9000/me\n${error}`
+      );
+      return null;
+    });
+};
+
+const Item = styled(Paper)(({ theme }) => ({
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+}));
 
 export default function Dashboard({ token, setToken }) {
   const [selectedRegion, updateRegion] = useState("all");
-  const updateRegionFormat = (region) => updateRegion(region.toLowerCase());
 
-  const Item = styled(Paper)(({ theme }) => ({
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-  }));
+  useEffect(() => {
+    fetch(`http://localhost:9000/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.bookmarks.length > 0)
+          updateRegion(res.bookmarks[0].description);
+        else updateRegion("all");
+      })
+      .catch((error) => {
+        setData([]);
+        console.log(
+          `API not responding me -> http://localhost:9000/me\n${error}`
+        );
+        return null;
+      });
+  }, []);
+
+  const updateRegionFormat = (region) => updateRegion(region.toLowerCase());
 
   return (
     <Box>
@@ -31,6 +71,11 @@ export default function Dashboard({ token, setToken }) {
             </Item>
           </Grid>
           <Grid item xs={12} md={6} container spacing={5}>
+            <Grid item xs={12} md={12} xl={6}>
+              <Item>
+                <TitleFav token={token} selectedRegion={selectedRegion} />
+              </Item>
+            </Grid>
             <Grid item xs={12} md={12} xl={6}>
               <Item>
                 <LineCharteEcoConso
