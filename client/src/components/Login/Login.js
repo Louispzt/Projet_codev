@@ -41,7 +41,7 @@ async function signUp(credentials) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ hashed_password: password, username: username }),
+    body: JSON.stringify({ password: password, username: username }),
   }).then((data) => data.json());
 }
 export default function Login({ setToken }) {
