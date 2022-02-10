@@ -1,14 +1,14 @@
 import React from "react";
 import { PieChart, Pie } from "recharts";
 
-function PieChartSourceEnergie({ selectedRegion }) {
+function PieChartSourceEnergie({ selectedRegion, token }) {
   const [dataSource, setDataSource] = React.useState([]);
   const [dataType, setDataType] = React.useState([]);
   //Make request to API each time selectedRegion change.
   React.useEffect(() => {
     fetch(`http://localhost:9000/eco2/sum/${selectedRegion}`, {
       headers: {
-        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       },
     })
       .then((res) => res.json())

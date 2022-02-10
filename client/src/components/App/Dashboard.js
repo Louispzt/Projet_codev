@@ -9,7 +9,7 @@ import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 
-export default function Dashboard() {
+export default function Dashboard({ token, setToken }) {
   const [selectedRegion, updateRegion] = useState("all");
   const updateRegionFormat = (region) => updateRegion(region.toLowerCase());
 
@@ -22,9 +22,7 @@ export default function Dashboard() {
 
   return (
     <Box>
-      <Box sx={{ margin: 5 }}>
-        <ButtonAppBar />
-      </Box>
+      <ButtonAppBar token={token} setToken={setToken} />
       <Box sx={{ flexGrow: 1, margin: 5 }}>
         <Grid container spacing={10}>
           <Grid item xs={12} md={6}>
@@ -35,17 +33,26 @@ export default function Dashboard() {
           <Grid item xs={12} md={6} container spacing={5}>
             <Grid item xs={12} md={12} xl={6}>
               <Item>
-                <LineCharteEcoConso selectedRegion={selectedRegion} />
+                <LineCharteEcoConso
+                  selectedRegion={selectedRegion}
+                  token={token}
+                />
               </Item>
             </Grid>
             <Grid item xs={12} md={12} xl={6}>
               <Item>
-                <AreaChartEcoSource selectedRegion={selectedRegion} />
+                <AreaChartEcoSource
+                  selectedRegion={selectedRegion}
+                  token={token}
+                />
               </Item>
             </Grid>
             <Grid item xs={12} md={12} xl={6}>
               <Item>
-                <PieChartSourceEnergie selectedRegion={selectedRegion} />
+                <PieChartSourceEnergie
+                  selectedRegion={selectedRegion}
+                  token={token}
+                />
               </Item>
             </Grid>
           </Grid>

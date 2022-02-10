@@ -8,7 +8,7 @@ import {
   Tooltip,
 } from "recharts";
 
-function AreaChartEcoSource({ selectedRegion }) {
+function AreaChartEcoSource({ selectedRegion, token }) {
   const [data, setData] = React.useState(null);
 
   const fetchData = () => {};
@@ -16,7 +16,7 @@ function AreaChartEcoSource({ selectedRegion }) {
   React.useEffect(() => {
     fetch(`http://localhost:9000/eco2/${selectedRegion}`, {
       headers: {
-        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       },
     })
       .then((res) => res.json())

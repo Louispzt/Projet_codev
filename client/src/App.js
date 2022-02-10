@@ -9,6 +9,6 @@ function App() {
   if (!token) {
     return <Login setToken={setToken} />;
   }
-  return <DashBoard />;
+  return <DashBoard token={token} setToken={setToken} />;
 }
 export default App;
