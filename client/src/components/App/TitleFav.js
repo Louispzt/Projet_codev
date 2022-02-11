@@ -37,6 +37,7 @@ export default function TitleFav({ token, selectedRegion }) {
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/me`, {
       headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     })

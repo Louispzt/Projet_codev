@@ -7,7 +7,12 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/material/Icon";
 import { Grid } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { Link } from "react-router-dom";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import LogoutIcon from "@mui/icons-material/Logout";
+import DataThresholdingIcon from "@mui/icons-material/DataThresholding";
 
+import { white } from "@mui/material/colors";
 export default function ButtonAppBar({ token, setToken }) {
   const Div = styled("div")(({ theme }) => ({
     ...theme.typography.button,
@@ -28,14 +33,32 @@ export default function ButtonAppBar({ token, setToken }) {
           >
             <MenuIcon />
           </IconButton>
+
           <Grid container justifyContent="flex-start">
             <Div>Electricité France</Div>
           </Grid>
+
           {token != null && (
             <Grid container justifyContent="flex-end">
-              <Button color="inherit" onClick={() => setToken(null)}>
-                Logout
-              </Button>
+              <IconButton
+                component={Link}
+                to="/user"
+                variant="contained"
+                aria-label="user"
+              >
+                <AccountCircleIcon />
+              </IconButton>
+              <IconButton
+                component={Link}
+                to="/"
+                variant="contained"
+                aria-label="dashboard"
+              >
+                <DataThresholdingIcon />
+              </IconButton>
+              <IconButton color="inherit" onClick={() => setToken(null)}>
+                <LogoutIcon />
+              </IconButton>
             </Grid>
           )}
         </Toolbar>
