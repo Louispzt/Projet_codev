@@ -6,6 +6,7 @@ import PieChartSourceEnergie from "../Graphs/PieChartSourceEnergie";
 import TitleFav from "./TitleFav";
 import ButtonAppBar from "./ButtonAppBar";
 import { Paper, Grid, Box, styled } from "@mui/material";
+import "../../styles/Dashboard.css";
 
 const getFav = ({ token }) => {
   fetch(`http://localhost:9000/me`, {
@@ -31,6 +32,7 @@ const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: "center",
+  justifyContent: "center",
   color: theme.palette.text.secondary,
 }));
 
@@ -67,17 +69,17 @@ export default function Dashboard({ token, setToken }) {
         <Grid container spacing={10}>
           <Grid item xs={12} md={6}>
             <Item>
-              <Map updateRegion={updateRegionFormat} />
+              <Map updateRegion={updateRegionFormat} token={token} />
             </Item>
           </Grid>
           <Grid item xs={12} md={6} container spacing={5}>
-            <Grid item xs={12} md={12} xl={6}>
+            <Grid item xs={12} md={12} xl={12}>
               <Item>
                 <TitleFav token={token} selectedRegion={selectedRegion} />
               </Item>
             </Grid>
             <Grid item xs={12} md={12} xl={6}>
-              <Item>
+              <Item className="graphContainer">
                 <LineCharteEcoConso
                   selectedRegion={selectedRegion}
                   token={token}
@@ -85,7 +87,7 @@ export default function Dashboard({ token, setToken }) {
               </Item>
             </Grid>
             <Grid item xs={12} md={12} xl={6}>
-              <Item>
+              <Item className="graphContainer">
                 <AreaChartEcoSource
                   selectedRegion={selectedRegion}
                   token={token}
@@ -93,7 +95,7 @@ export default function Dashboard({ token, setToken }) {
               </Item>
             </Grid>
             <Grid item xs={12} md={12} xl={6}>
-              <Item>
+              <Item className="graphContainer">
                 <PieChartSourceEnergie
                   selectedRegion={selectedRegion}
                   token={token}

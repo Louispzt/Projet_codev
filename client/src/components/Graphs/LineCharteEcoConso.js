@@ -8,6 +8,7 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
+import "../../styles/recharts.css";
 
 function LineCharteEcoConso({ selectedRegion, token }) {
   const [data, setData] = React.useState(null);

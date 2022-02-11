@@ -61,7 +61,7 @@ function PieChartSourceEnergie({ selectedRegion, token }) {
   };
 
   return (
-    <PieChart width={400} height={400}>
+    <PieChart width={400} height={200}>
       <Pie
         startAngle={180}
         endAngle={0}
