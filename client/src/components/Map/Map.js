@@ -10,7 +10,7 @@ import { Box } from "@mui/system";
 function Map({ updateRegion, token }) {
   const [dataMap, setDataMap] = useState({});
   useEffect(() => {
-    fetch("http://localhost:9000/eco2/sum/summary", {
+    fetch(`${process.env.REACT_APP_API_URL}/eco2/sum/summary`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

@@ -6,7 +6,7 @@ import logo from "../../media/logo.png";
 async function loginUser(credentials) {
   const { password, username } = credentials;
 
-  return fetch("http://localhost:9000/token", {
+  return fetch(`${process.env.REACT_APP_API_URL}/token`, {
     method: "POST",
     mode: "cors",
     headers: {
@@ -19,7 +19,7 @@ async function loginUser(credentials) {
 async function signUp(credentials) {
   const { password, username } = credentials;
 
-  return fetch("http://localhost:9000/signup", {
+  return fetch(`${process.env.REACT_APP_API_URL}/signup`, {
     method: "POST",
     mode: "cors",
     headers: {

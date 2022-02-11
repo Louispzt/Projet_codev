@@ -15,7 +15,7 @@ function LineCharteEcoConso({ selectedRegion, token }) {
 
   //Make request to API each time selectedRegion change.
   React.useEffect(() => {
-    fetch(`http://localhost:9000/eco2/${selectedRegion}`, {
+    fetch(`${process.env.REACT_APP_API_URL}/eco2/${selectedRegion}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -27,7 +27,7 @@ function LineCharteEcoConso({ selectedRegion, token }) {
       .catch((error) => {
         setData([]);
         console.log(
-          `API not responding LineChart-> http://localhost:9000/eco2/${selectedRegion}\n${error}`
+          `API not responding LineChart-> ${process.env.REACT_APP_API_URL}/eco2/${selectedRegion}\n${error}`
         );
       });
     return () => {};
