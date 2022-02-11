@@ -43,26 +43,21 @@ function Map({ updateRegion, token }) {
   const getColorForRegion = (region) => {
     let prct;
     let color;
-    console.log(infoMap);
     switch (infoMap) {
       case null:
         color = "blue";
         break;
       case "Renouvelable":
-        console.log(region);
         prct =
           dataMap[region].renewable /
           (dataMap[region].renewable + dataMap[region].non_renewable);
         color = shadeRGBColor("rgb(55,189,9)", prct * 5);
         break;
       case "Consommation":
-        console.log(dataMap);
         prct =
           (dataMap[region]["consommation"] - dataMap["all"]["consommation"]) /
           dataMap["all"]["consommation"];
         color = shadeRGBColor("rgb( 222, 48, 13)", prct * 3);
-        console.log(prct);
-        console.log(color);
         break;
     }
     return color;
@@ -79,7 +74,6 @@ function Map({ updateRegion, token }) {
 
   let changeRegionColor = (event) => {
     let onColor = "black";
-    console.log(infoMap);
     switch (infoMap) {
       case null:
         onColor = " #0d56de";

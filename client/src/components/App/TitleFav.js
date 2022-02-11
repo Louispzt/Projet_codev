@@ -5,7 +5,6 @@ import { IconButton, Typography, Box } from "@mui/material";
 
 export default function TitleFav({ token, selectedRegion }) {
   function deleteFav(token) {
-    console.log(token);
     fetch("http://localhost:9000/me/delete_bookmark", {
       method: "POST",
       mode: "cors",
@@ -35,7 +34,6 @@ export default function TitleFav({ token, selectedRegion }) {
     });
   }
   const [fav, setFavIcon] = useState(false);
-  console.log(token);
   useEffect(() => {
     fetch(`http://localhost:9000/me`, {
       headers: {
@@ -44,7 +42,6 @@ export default function TitleFav({ token, selectedRegion }) {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res.bookmarks[0].description);
         if (res.bookmarks.length > 0)
           if (res.bookmarks[0].description == selectedRegion) {
             setFavIcon(true);
