@@ -51,7 +51,7 @@ export default function TitleFav({ token, selectedRegion }) {
           } else setFavIcon(false);
       })
       .catch((error) => {
-        setData([]);
+        setFavIcon(false);
         console.log(
           `API not responding me -> http://localhost:9000/me\n${error}`
         );

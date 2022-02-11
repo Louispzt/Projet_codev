@@ -7,7 +7,7 @@ import {
   CartesianGrid,
   Tooltip,
 } from "recharts";
-
+import "../../styles/recharts.css";
 function AreaChartEcoSource({ selectedRegion, token }) {
   const [data, setData] = React.useState(null);
 
@@ -62,51 +62,61 @@ function AreaChartEcoSource({ selectedRegion, token }) {
     );
   };
   return (
-    <AreaChart
-      width={400}
-      height={200}
-      data={data}
-      stackOffset="expand"
-      margin={{
-        top: 10,
-        right: 30,
-        left: 0,
-        bottom: 0,
-      }}
-    >
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="jour_heure" />
-      <YAxis tickFormatter={toPercent} />
-      <Tooltip content={renderTooltipContent} />
-      <Area
-        type="monotone"
-        dataKey="nucleaire"
-        stackId="1"
-        stroke="#82ca9d"
-        fill="#82ca9d"
-      />
-      <Area
-        type="monotone"
-        dataKey="solaire"
-        stackId="1"
-        stroke="#ffc658"
-        fill="#ffc658"
-      />
-      <Area
-        type="monotone"
-        dataKey="eolien"
-        stackId="1"
-        stroke="#ff4d4d"
-        fill="#ff9999"
-      />
-      <Area
-        type="monotone"
-        dataKey="hydraulique"
-        stackId="1"
-        stroke="#8884d8"
-        fill="#8884d8"
-      />
-    </AreaChart>
+    <div className="rechart-wrapper">
+      <AreaChart
+        width={400}
+        height={200}
+        data={data}
+        stackOffset="expand"
+        margin={{
+          top: 10,
+          right: 30,
+          left: 0,
+          bottom: 0,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="jour_heure" />
+        <YAxis tickFormatter={toPercent} />
+        <Tooltip content={renderTooltipContent} />
+        <Area
+          type="monotone"
+          dataKey="nucleaire"
+          stackId="1"
+          stroke="#82ca9d"
+          fill="#82ca9d"
+        />
+        <Area
+          type="monotone"
+          dataKey="solaire"
+          stackId="1"
+          stroke="#ffc658"
+          fill="#ffc658"
+        />
+        <Area
+          type="monotone"
+          dataKey="eolien"
+          stackId="1"
+          stroke="#ff4d4d"
+          fill="#ff9999"
+        />
+        <Area
+          type="monotone"
+          dataKey="hydraulique"
+          stackId="1"
+          stroke="#8884d8"
+          fill="#8884d8"
+        />
+        <Area
+          type="monotone"
+          dataKey="thermique"
+          stackId="1"
+          stroke="#5D1D70"
+          fill="#B138D6"
+        />
+        <Area type="monotone" dataKey="bioenergies" stackId="1" />
+      </AreaChart>
+    </div>
   );
 }
 
