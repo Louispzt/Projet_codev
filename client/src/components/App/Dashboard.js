@@ -52,7 +52,7 @@ export default function Dashboard({ token, setToken }) {
         else updateRegion("all");
       })
       .catch((error) => {
-        setData([]);
+        updateRegion("all");
         console.log(
           `API not responding me -> ${process.env.REACT_APP_API_URL}/me\n${error}`
         );
@@ -61,7 +61,6 @@ export default function Dashboard({ token, setToken }) {
   }, []);
 
   const updateRegionFormat = (region) => updateRegion(region.toLowerCase());
-
   return (
     <Box>
       <ButtonAppBar token={token} setToken={setToken} />
