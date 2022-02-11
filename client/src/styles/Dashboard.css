@@ -2,3 +2,7 @@
     min-width: 400px;
     min-height: 200px;
 }
+
+body{
+    background-color: "#282c3";
+}
