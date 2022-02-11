@@ -3,6 +3,9 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import ButtonAppBar from "../App/ButtonAppBar";
 import logo from "../../media/logo.png";
+import Modal from "../Modal/index";
+import { Rings } from "react-loader-spinner";
+
 async function loginUser(credentials) {
   const { password, username } = credentials;
 
@@ -31,22 +34,38 @@ async function signUp(credentials) {
 export default function Login({ setToken }) {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const token = await loginUser({
+
+    setLoading(true);
+    loginUser({
       username,
       password: password,
-    });
-    setToken(token.access_token);
+    })
+      .then((val) => {
+        setToken(val.access_token);
+        if (val["detail"] !== "") throw val["detail"];
+      })
+      .catch((val) => {
+        setError(true);
+        setErrorMessage(val);
+      })
+      .finally(() => setLoading(false));
   };
 
   const handleSignUp = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const created = await signUp({
       username,
       password,
     });
+    console.log(created);
+    setLoading(false);
   };
   return (
     <>
@@ -58,8 +77,44 @@ export default function Login({ setToken }) {
         <body class="h-full">
         ```
       */}
-      <ButtonAppBar />
+      {error ? (
+        <Modal
+          title="Error"
+          message={errorMessage}
+          error={error}
+          setError={setError}
+        />
+      ) : (
+        ""
+      )}
+      <ButtonAppBar token={undefined} setToken={undefined} />
       <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        {loading ? (
+          <div
+            style={{
+              position: "fixed",
+              zIndex: 2,
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              background: "rgba(255, 255, 255, 0.5)",
+            }}
+          >
+            <div
+              style={{
+                position: "absolute",
+                left: "50%",
+                top: "50%",
+                transform: "translate(-50%, -50%)",
+              }}
+            >
+              <Rings color="#00BFFF" height={200} width={200} />
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
         <div className="max-w-md w-full space-y-8">
           <div>
             <img className="mx-auto h-12 w-auto" src={logo} alt="Workflow" />
