@@ -9,7 +9,7 @@ import { Paper, Grid, Box, styled } from "@mui/material";
 import "../../styles/Dashboard.css";
 
 const getFav = ({ token }) => {
-  fetch(`http://localhost:9000/me`, {
+  fetch(`${process.env.REACT_APP_API_URL}/me`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -22,7 +22,7 @@ const getFav = ({ token }) => {
     .catch((error) => {
       setData([]);
       console.log(
-        `API not responding me -> http://localhost:9000/me\n${error}`
+        `API not responding me -> ${process.env.REACT_APP_API_URL}/me\n${error}`
       );
       return null;
     });
@@ -40,7 +40,7 @@ export default function Dashboard({ token, setToken }) {
   const [selectedRegion, updateRegion] = useState("all");
 
   useEffect(() => {
-    fetch(`http://localhost:9000/me`, {
+    fetch(`${process.env.REACT_APP_API_URL}/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -54,7 +54,7 @@ export default function Dashboard({ token, setToken }) {
       .catch((error) => {
         setData([]);
         console.log(
-          `API not responding me -> http://localhost:9000/me\n${error}`
+          `API not responding me -> ${process.env.REACT_APP_API_URL}/me\n${error}`
         );
         return null;
       });

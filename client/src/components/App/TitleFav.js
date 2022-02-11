@@ -5,7 +5,7 @@ import { IconButton, Typography, Box } from "@mui/material";
 
 export default function TitleFav({ token, selectedRegion }) {
   function deleteFav(token) {
-    fetch("http://localhost:9000/me/delete_bookmark", {
+    fetch(`${process.env.REACT_APP_API_URL}/me/delete_bookmark`, {
       method: "POST",
       mode: "cors",
       headers: {
@@ -20,7 +20,7 @@ export default function TitleFav({ token, selectedRegion }) {
 
   function setFav(selectedRegion, token) {
     deleteFav(token);
-    fetch("http://localhost:9000/me/add_bookmark", {
+    fetch(`${process.env.REACT_APP_API_URL}/me/add_bookmark`, {
       method: "POST",
       mode: "cors",
       headers: {
@@ -35,7 +35,7 @@ export default function TitleFav({ token, selectedRegion }) {
   }
   const [fav, setFavIcon] = useState(false);
   useEffect(() => {
-    fetch(`http://localhost:9000/me`, {
+    fetch(`${process.env.REACT_APP_API_URL}/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -50,7 +50,7 @@ export default function TitleFav({ token, selectedRegion }) {
       .catch((error) => {
         setFavIcon(false);
         console.log(
-          `API not responding me -> http://localhost:9000/me\n${error}`
+          `API not responding me -> ${process.env.REACT_APP_API_URL}/me\n${error}`
         );
         return null;
       });
